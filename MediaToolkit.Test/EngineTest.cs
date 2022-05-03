@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
+using System.Runtime.InteropServices;
 
 namespace MediaToolkit.Test
 {
@@ -12,17 +13,24 @@ namespace MediaToolkit.Test
     [Fact]
     public void Should_Initialize_FFprobe_Path()
     {
+      var ffmpeg_string = @"c:\some\folder\path\ffmpeg.exe";
+      var ffprobe_string = @"c:\some\folder\path\ffprobe.exe";
+      if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+        ffmpeg_string = @"/some/folder/path/ffmpeg";
+        ffprobe_string = @"/some/folder/path/ffprobe";
+      }
+
       // Create SUT directly intentionally
       var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                {@"c:\some\folder\path\ffmpeg.exe", new MockFileData("")},
-                {@"c:\some\folder\path\ffprobe.exe", new MockFileData("")}
+                {ffmpeg_string, new MockFileData("")},
+                {ffprobe_string, new MockFileData("")}
             });
 
-      var engine = new Engine(@"c:\some\folder\path\ffmpeg.exe", fileSystem);
+      var engine = new Engine(ffmpeg_string, fileSystem);
 
-      Assert.Equal(@"c:\some\folder\path\ffmpeg.exe", engine.FfmpegFilePath);
-      Assert.Equal(@"c:\some\folder\path\ffprobe.exe", engine.FfprobeFilePath);
+      Assert.Equal(ffmpeg_string, engine.FfmpegFilePath);
+      Assert.Equal(ffprobe_string, engine.FfprobeFilePath);
     }
   }
 }

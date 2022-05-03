@@ -39,7 +39,7 @@ namespace MediaToolkit
 
       FfmpegFilePath = ffMpegPath;
       var ffmpegDirectoryPath = _fileSystem.FileInfo.FromFileName(ffMpegPath).DirectoryName;
-      FfprobeFilePath = _fileSystem.Path.Combine(ffmpegDirectoryPath, "ffprobe.exe");
+      FfprobeFilePath = _fileSystem.Path.Combine(ffmpegDirectoryPath, "ffprobe" );
 
       EnsureFFmpegFileExists();
       EnsureFFmpegIsNotUsed();

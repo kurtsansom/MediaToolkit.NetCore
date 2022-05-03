@@ -15,7 +15,8 @@ namespace MediaToolkit.Test
     private string _inputUrlPath = "";
     private string _outputFilePath = "";
     private bool _printToConsoleEnabled;
-    private readonly string _ffmpegFilePath = @"C:\ffmpeg\ffmpeg.exe";
+    // private readonly string _ffmpegFilePath = @"C:\ffmpeg\ffmpeg.exe";
+    private readonly string _ffmpegFilePath = @"/usr/bin/ffmpeg";
     private readonly IFileSystem _fileSystem = new FileSystem();
 
 
@@ -37,13 +38,14 @@ namespace MediaToolkit.Test
         return;
       }
 
-      var testAssetsPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\TestVideo");
+      // var testAssetsPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\TestVideo");
+      var testAssetsPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "TestVideo");
       var testAssetsFullPath = Path.GetFullPath(testAssetsPath);
 
       if(!Directory.Exists(testAssetsFullPath))
         throw new InvalidOperationException($"Directory not found: {testAssetsFullPath}");
 
-      _inputFilePath = $@"{testAssetsFullPath}\BigBunny.m4v";
+      _inputFilePath = Path.Combine($@"{testAssetsFullPath}", "BigBunny.m4v");
       _inputUrlPath = @"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
       // Note: assuming that tests executed from bin folder
@@ -60,7 +62,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_CutVideo()
     {
-      string filePath = @"{0}\Cut_Video_Test.mp4";
+      string filePath = Path.Combine(@"{0}","Cut_Video_Test.mp4");
       string outputPath = string.Format(filePath, Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
@@ -89,7 +91,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_CropVideo()
     {
-      string outputPath = string.Format(@"{0}\Crop_Video_Test.mp4", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Crop_Video_Test.mp4"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -117,7 +119,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_GetThumbnail()
     {
-      string outputPath = string.Format(@"{0}\Get_Thumbnail_Test.jpg", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Get_Thumbnail_Test.jpg"), Path.GetDirectoryName(_outputFilePath));
       if(File.Exists(outputPath))
       {
         File.Delete(outputPath);
@@ -145,7 +147,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_GetThumbnailFromHTTPLink()
     {
-      string outputPath = string.Format(@"{0}\Get_Thumbnail_FromHTTP_Test.jpg", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Get_Thumbnail_FromHTTP_Test.jpg"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputUrlPath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -195,7 +197,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_ConvertBasic()
     {
-      string outputPath = string.Format(@"{0}\Convert_Basic_Test.avi", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Convert_Basic_Test.avi"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -221,7 +223,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_ConvertToGif()
     {
-      string outputPath = string.Format(@"{0}\Convert_GIF_Test.gif", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Convert_GIF_Test.gif"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -247,7 +249,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_ConvertToDVD()
     {
-      string outputPath = string.Format("{0}/Convert_DVD_Test.vob", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Convert_DVD_Test.vob"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -272,7 +274,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_TranscodeUsingConversionOptions()
     {
-      string outputPath = string.Format("{0}/Transcode_Test.avi", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Transcode_Test.avi"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
@@ -294,7 +296,7 @@ namespace MediaToolkit.Test
     [Fact]
     public void Can_ScaleDownPreservingAspectRatio()
     {
-      string outputPath = string.Format(@"{0}\Convert_Basic_Test.mp4", Path.GetDirectoryName(_outputFilePath));
+      string outputPath = string.Format(Path.Combine(@"{0}","Convert_Basic_Test.mp4"), Path.GetDirectoryName(_outputFilePath));
 
       var inputFile = new MediaFile { Filename = _inputFilePath };
       var outputFile = new MediaFile { Filename = outputPath };
